@@ -1,0 +1,21 @@
+@echo off 
+
+:: ************************
+:: Script:  A sub script of Sneaky Win Intruder, remove temp user profile at next logon
+::          This file won't be used, but a real-time genereated one in %temp% instead
+:: Refer to Swi.bat and Readme.txt
+:: ************************
+
+:: #  This is the last part of cleanup script for SWI
+
+:: #  remove temp user profile
+cd /d "%userprofile%" >nul 2>&1
+cd.. >nul 2>&1
+
+rd /s /q "temp" >nul 2>&1
+
+:: #  remove StartX, 
+del "%systemroot%\system32\startx.exe" /f /q >nul 2>&1
+
+:: #  remove itself
+del "%systemroot%\system32\clean_next_boot.bat" /f /q >nul 2>&1

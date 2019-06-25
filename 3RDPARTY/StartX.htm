@@ -1,0 +1,649 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>StartX v1.06</title>
+<link rel="stylesheet" type="text/css" href="naughter.css">
+</head>
+
+<body>
+
+<h2 align="left"><img border="0" src="startx.gif" width="41" height="33">StartX 
+v1.06</h2>
+<p>Welcome to StartX, A very simple utility to allow you to call the CreateProcess 
+API from the command line. </p>
+<p>&nbsp;</p>
+<table border="0">
+	<tr>
+		<td><a href="#History">History</a></td>
+	</tr>
+	<tr>
+		<td><a href="#Copyright">Copyright</a></td>
+	</tr>
+	<tr>
+		<td><a href="#Installation">Installation Requirements</a></td>
+	</tr>
+	<tr>
+		<td><a href="#Usage">Usage</a></td>
+	</tr>
+	<tr>
+		<td><a href="#Contact">Contacting the Author</a></td>
+	</tr>
+</table>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<h2><a name="History"></a>History</h2>
+<p><strong>V1.0 (29 January 2003)</strong> </p>
+<ul>
+	<li>First public release.</li>
+</ul>
+<p><strong>3 July 2004</strong> </p>
+<ul>
+	<li>Now includes explicit info on the usage of the executable &quot;StartX.exe&quot; in 
+	the documentation</li>
+</ul>
+<p><strong>V1.01 (20 August 2004)</strong> </p>
+<ul>
+	<li>Now returns the error code back to the OS as returned from any failures 
+	when calling the Win32 SDK calls which StartX uses.</li>
+	<li>Now includes a /NOUI command line parameter, which suppresses any messages 
+	boxes which can appear when an error occurs. Thanks to Trevor Hart for these 
+	2 suggestions.</li>
+</ul>
+<p><strong>V1.02 (20 December 2004)</strong> </p>
+<ul>
+	<li>Now supports a /RETURNERROR command line parameter, which returns the error 
+	code of the process being run. Setting this parameter implies using /WAIT. Thanks 
+	to Tomasz Nowak for suggesting this addition.</li>
+</ul>
+<p><strong>V1.03 (19 August 2005)</strong> </p>
+<ul>
+	<li>Error codes are now reported as a string by calling FormatMessage. Thanks 
+	to Dennis Bareis for prompting this update.</li>
+	<li>String resources which are displayed to the end user now use the format 
+	IDP_...</li>
+</ul>
+<p><strong>V1.04 (17 July 2006)</strong> </p>
+<ul>
+	<li>Updated copyright details.</li>
+	<li>Optimized CMyCommandLineInfo constructor code</li>
+	<li>Code now uses new C++ style casts rather than old style C casts where necessary.</li>
+	<li>CSIDL folders parameter replacement now uses the value @CSIDLnumber@ instead 
+	of just @number@. This avoids problems where you need to pass a real &quot;@&quot; onto 
+	the application being controlled. Thanks to Ramon Hansman for reporting this 
+	issue.</li>
+	<li>Updated the documentation to use the same style as the web site.</li>
+	<li>Replaced all calls to ZeroMemory with memset</li>
+	<li>Code now securely deletes the domain, username and password strings once 
+	they have been used.</li>
+	<li>Updated the code to clean compile on VC 2005</li>
+	<li>The code now requires the Platform SDK if compiled using VC 6.</li>
+	<li>Code now uses SHGFP_TYPE_CURRENT instead of SHGFP_TYPE_DEFAULT when calling 
+	SHGetFolderPath.</li>
+	<li>Fixed a coding error where CStartXApp::InitInstance returned TRUE instead 
+	of FALSE.</li>
+	<li>CreateProcessWithLogonW is now used if a username is specified or if the 
+	prompt password command line option is set.</li>
+</ul>
+<p><strong>V1.05 (8 February 2008)</strong></p>
+<ul>
+	<li>Updated copyright details.</li>
+	<li>Removed VC 6 style AppWizard comments from the code</li>
+	<li>Updated the code to clean compile on VC 2008</li>
+	<li>The code and shipped exe has been updated to take advantage of VC 2005 specific 
+	coding techniques.</li>
+	<li>In fact the shipped exe in the zip was compiled with VC 2005 SP1.</li>
+	<li>CStartXApp::GetErrorMessage now uses the FORMAT_MESSAGE_IGNORE_INSERTS flag. 
+	For more information please see Raymond Chen&#39;s blog at
+	<a href="http://blogs.msdn.com/oldnewthing/archive/2007/11/28/6564257.aspx">
+	http://blogs.msdn.com/oldnewthing/archive/2007/11/28/6564257.aspx</a>. Thanks 
+	to Alexey Kuznetsov for reporting this issue.</li>
+</ul>
+<p><strong>V1.06 (11 November 2008)</strong></p>
+<ul>
+	<li>Code now compiles cleanly using Code Analysis (/analyze)</li>
+	<li>Updated code to compile correctly using _ATL_CSTRING_EXPLICIT_CONSTRUCTORS 
+	define</li>
+	<li>The code has now been updated to support VC 2005 or later only. </li>
+	<li>StartX can now set the process affinity mask via the new AFFINITY 
+	command line option. The value you provide here is the value passed to 
+	SetProcessAffinityMask. So for example if you wanted to limit the new 
+	process to only run on the 2nd and 3rd CPU only of a computer then you would 
+	use the command line &quot;/AFFINITY6&quot;. i.e. 0x2 &amp; 0x4. Probably the most common 
+	value you would use for this would be &quot;/AFFINITY1&quot; which would limit the 
+	process to run on the first CPU only. Please note that the value you provide 
+	on the command line should be decimal and not hexadecimal. Thanks to &quot;Cobus&quot; 
+	for prompting this update.</li>
+</ul>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<h2><a name="Copyright"></a>Copyright</h2>
+<ul>
+	<li>You are allowed to include the source code in any product (commercial, shareware, 
+	freeware or otherwise) when your product is released in binary form. </li>
+	<li>You are allowed to modify the source code in any way you want except you 
+	cannot modify the copyright details at the top of each module. </li>
+	<li>If you want to distribute source code with your application, then you are 
+	only allowed to distribute versions released by the author. This is to maintain 
+	a single distribution point for the source code.</li>
+	<li>The executable file itself, namely &quot;StartX.exe&quot; can be freely redistributed 
+	by anyone.</li>
+</ul>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<h2><a name="Installation"></a>Installation Requirements </h2>
+<ul>
+	<li>The program is for Win32 only and has no external requirements on DLLs other 
+	than the ones shipped as standard with any Win32 platform. This is achieved 
+	by statically linking to MFC (which the program uses internally for its implementation).</li>
+</ul>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<h2><a name="Usage"></a>Usage </h2>
+<ul>
+	<li>Places where you might find StartX useful are in adding an Autorun.inf file 
+	to your CD-R / CD-RW Discs. For example suppose you have a text file called 
+	readme.txt on the root of your CD which you would like to run it automatically 
+	by displaying it in Wordpad maximized whenever the user inserts the CD. All 
+	you need to do is put StartX.exe, some ico file and the readme.txt files into 
+	the root directory and create a autorun.inf file with the following contents:</li>
+</ul>
+<blockquote>
+	<p>[autorun]<br>
+	open=StartX.exe /MAX &quot;wordpad.exe readme.txt&quot;<br>
+	icon=youricon.ico</p>
+</blockquote>
+<ul>
+	<li>The more technically minded of you may say why is there a need to have this 
+	program since you can use &quot;start filename&quot; on autorun CD&#39;s without any apparent 
+	problems. The problem with this approach is that it does not work on NT / 2000 
+	/ XP / 2003, Vista &amp; 2008, &quot;start&quot; is implemented as an <i>&quot;Internal&quot;</i> command 
+	in cmd.exe (as opposed to a standard exe on Windows 9x) with the upshot that 
+	your CD&#39;s will not AutoRun on versions of Windows based on the NT kernel. Using 
+	StartX will mean that your CD&#39;s will autorun on all OS&#39;s which support it.</li>
+	<li>StartX includes a full superset of the commands which the Windows 2000 / 
+	XP internal Start command provides. The full list is:<br>
+	<br>
+	StartX [&quot;title&quot;] [/Dpath] [/I] [/MIN] [/NOUI] [/MAX] [/SEPARATE | /SHARED] [/PP] 
+	[/Uuser] [/Wpassword] [/Odomain] [/K[desktop]] [/Px,y] [/Scx1,cy1] [/CScx2,cy2] 
+	[/FR] [/FG] [/FB] [/BR] [/BG] [/BB] [/FS] [/LP] [/LNCO] [/LOW | /NORMAL | /HIGH 
+	| /REALTIME | /ABOVENORMAL | /BELOWNORMAL] [/WAIT] [/B] [/NOUI] [/RETURNERROR] 
+	[/AFFINITYx] [&quot;command/program parameters&quot;]<br>
+&nbsp;<table border="1" cellpadding="0" cellspacing="0" width="100%">
+		<tr>
+			<td width="15%"><i>Parameter</i></td>
+			<td width="85%"><i>Description</i></td>
+		</tr>
+		<tr>
+			<td width="15%">&quot;title&quot;</td>
+			<td width="85%">Title to display in window title bar.</td>
+		</tr>
+		<tr>
+			<td width="15%">path</td>
+			<td width="85%">Starting directory</td>
+		</tr>
+		<tr>
+			<td width="15%">NOUI</td>
+			<td width="85%">Suppresses any UI which StartX displays in response 
+			to runtime errors. This is helpful when StartX is being called by another 
+			process and we want to avoid displaying any UI which requires a user 
+			to click a button to close the message displayed.</td>
+		</tr>
+		<tr>
+			<td width="15%">B</td>
+			<td width="85%">Start application without creating a new window.</td>
+		</tr>
+		<tr>
+			<td width="15%">MIN</td>
+			<td width="85%">Start window minimized</td>
+		</tr>
+		<tr>
+			<td width="15%">MAX</td>
+			<td width="85%">Start window maximized</td>
+		</tr>
+		<tr>
+			<td width="15%">SEPARATE</td>
+			<td width="85%">Start 16-bit Windows program in separate memory space</td>
+		</tr>
+		<tr>
+			<td width="15%">SHARED </td>
+			<td width="85%">Start 16-bit Windows program in shared memory space</td>
+		</tr>
+		<tr>
+			<td width="15%">PP</td>
+			<td width="85%">Prompts for credentials if the program is to be run 
+			under another user account. This uses the standard CredUIPromptForCredentials 
+			dialog which is available on Windows XP, Windows 2003 Server or later 
+			only</td>
+		</tr>
+		<tr>
+			<td width="15%">user</td>
+			<td width="85%">The account under which to run the program. This is 
+			support on Windows 2000, Windows XP, Windows 2003 Server or later only.</td>
+		</tr>
+		<tr>
+			<td width="15%">password</td>
+			<td width="85%">The password to use when logging in using the account 
+			&quot;user&quot;</td>
+		</tr>
+		<tr>
+			<td width="15%">domain</td>
+			<td width="85%">The NT domain to log into when using the account &quot;user&quot;</td>
+		</tr>
+		<tr>
+			<td width="15%">desktop</td>
+			<td width="85%">Name of the desktop only or the name of both the desktop 
+			and window station to run the program on. A backslash in the string 
+			indicates that the string includes both desktop and window station names. 
+			If /K is not specified, the program inherits the desktop and window 
+			station of the StartX program. If no value for desktop is specified 
+			but /K is used, then the process does not inherit the desktop and window 
+			station of its parent process; instead, the system determines if a new 
+			desktop and window station need to be created. If the impersonated user 
+			already has a desktop, the system will use the existing desktop.</td>
+		</tr>
+		<tr>
+			<td width="15%">x,y</td>
+			<td width="85%">Specifies the x and y offset, in pixels, of the upper 
+			left corner of a window if a new window is created. The offset is from 
+			the upper left corner of the screen. For GUI processes, the specified 
+			position is used the first time the new process calls CreateWindow to 
+			create an overlapped window if the <i>y</i> parameter of CreateWindow 
+			is CW_USEDEFAULT.</td>
+		</tr>
+		<tr>
+			<td width="15%">cx1, cy2</td>
+			<td width="85%">Specifies the width and height, in pixels, of the window 
+			if a new window is created. For GUI processes, this is used only the 
+			first time the new process calls CreateWindow to create an overlapped 
+			window if the <i>nWidth</i> parameter of CreateWindow is CW_USEDEFAULT.</td>
+		</tr>
+		<tr>
+			<td width="15%">cx2, cy2</td>
+			<td width="85%">For console processes, if a new console window is created, 
+			specifies the screen buffer width and height in character columns. This 
+			value is ignored in a GUI process and on Windows 95/98/Me.</td>
+		</tr>
+		<tr>
+			<td width="15%">FR</td>
+			<td width="85%">Specifies that initial text of red color if a new console 
+			window is created in a console application</td>
+		</tr>
+		<tr>
+			<td width="15%">RG</td>
+			<td width="85%">Specifies that initial text of green color if a new 
+			console window is created in a console application</td>
+		</tr>
+		<tr>
+			<td width="15%">FB</td>
+			<td width="85%">Specifies that initial text of blue color if a new console 
+			window is created in a console application</td>
+		</tr>
+		<tr>
+			<td width="15%">FR</td>
+			<td width="85%">Specifies the initial background color of red color 
+			if a new console window is created in a console application</td>
+		</tr>
+		<tr>
+			<td width="15%">FG</td>
+			<td width="85%">Specifies the initial background color of green color 
+			if a new console window is created in a console application</td>
+		</tr>
+		<tr>
+			<td width="15%">FB</td>
+			<td width="85%">Specifies the initial background color of blue color 
+			if a new console window is created in a console application</td>
+		</tr>
+		<tr>
+			<td width="15%">FS</td>
+			<td width="85%">Indicates that the process should be run in full-screen 
+			mode, rather than in windowed mode. Applies to Windows NT/ 2000/ XP 
+			or 2003 Server only</td>
+		</tr>
+		<tr>
+			<td width="15%">LP</td>
+			<td width="85%">Used in conjunction with the /Uuser parameter. Log on, 
+			then load the user&#39;s profile. Loading the profile can be time-consuming, 
+			so it is best to use this value only if you must access the user&#39;s profile 
+			information</td>
+		</tr>
+		<tr>
+			<td width="15%">LNCO</td>
+			<td width="85%">Used in conjunction with the /Uuser parameter. Log on, 
+			but use the specified credentials on the network only. The new process 
+			uses the same token as the caller, but the system creates a new logon 
+			session within LSA, and the process uses the specified credentials as 
+			the default credentials. This value can be used to create a process 
+			that uses a different set of credentials locally than it does remotely. 
+			This is useful in inter-domain scenarios where there is no trust relationship.</td>
+		</tr>
+		<tr>
+			<td width="15%">LOW</td>
+			<td width="85%">Start application in the IDLE priority class</td>
+		</tr>
+		<tr>
+			<td width="15%">NORMAL</td>
+			<td width="85%">Start application in the NORMAL priority class</td>
+		</tr>
+		<tr>
+			<td width="15%">HIGH</td>
+			<td width="85%">Start application in the HIGH priority class</td>
+		</tr>
+		<tr>
+			<td width="15%">REALTIME</td>
+			<td width="85%">Start application in the REALTIME priority class</td>
+		</tr>
+		<tr>
+			<td width="15%">ABOVENORMAL</td>
+			<td width="85%">Start application in the ABOVENORMAL priority class</td>
+		</tr>
+		<tr>
+			<td width="15%">BELOWNORMAL</td>
+			<td width="85%">Start application in the BELOWNORMAL priority class</td>
+		</tr>
+		<tr>
+			<td width="15%">WAIT</td>
+			<td width="85%">Start application and wait for it to terminate</td>
+		</tr>
+		<tr>
+			<td width="15%">NOUI</td>
+			<td width="85%">Suppresses any error message boxes which StartX may 
+			display</td>
+		</tr>
+		<tr>
+			<td width="15%">RETURNERROR</td>
+			<td width="85%">Returns the error code of the remote process when it 
+			exits. Setting this implies /WAIT</td>
+		</tr>
+		<tr>
+			<td width="15%">AFFINITYx</td>
+			<td width="85%">The value X will be passed to the function 
+			SetProcessAffinityMask. So for example if you wanted to limit the 
+			new process to only run on the 2nd and 3rd CPU of a computer then 
+			you would use the command line &quot;/AFFINITY6&quot;. i.e. 0x2 &amp; 0x4. 
+			Probably the most common value you would use for this would be 
+			&quot;/AFFINITY1&quot; which would limit the process to run on the first CPU 
+			only. Please note that the value you provide on the command line 
+			should be decimal and not hexadecimal.</td>
+		</tr>
+		<tr>
+			<td width="15%">command / program parameters</td>
+			<td width="85%">This is the actual command line to use. Please note 
+			that the full command line should be enclosed in quotes.</td>
+		</tr>
+	</table>
+	</li>
+</ul>
+<p>&nbsp;</p>
+<ul>
+	<li>StartX also supports four replaceable parameters in the all string commands 
+	sent to it. These values are parsed case sensitively and are: <br>
+	<br>
+	@EXEDRV@ which gets replaced with the drive letter path where StartX is run 
+	from. <br>
+	The other variable is @EXEDIR@ which is the fully qualified folder where StartX 
+	is run from.<br>
+	@QUOTE@ which puts a Quote character i.e. &quot; into the string when the program 
+	is called. <br>
+	<br>
+	For example:<br>
+	<br>
+	StartX.exe &quot;@EXEDRV@\Prog\MyProg.exe @EXEDIR@\DataFiles\myfile.xyz&quot; <br>
+	<br>
+	Another example would if calling Notepad with the file &quot;c:\A directory with 
+	spaces\file.txt&quot; and ensuring that the filename is embedded with quotes. In 
+	this case, you would use the following command line:<br>
+	<br>
+	StartX.exe &quot;notepad.exe @QUOTE@c:\directory with spaces\file.txt@QUOTE@&quot;<br>
+	<br>
+	The final replaceable parameter is @CSIDLnumericvalue@ and corresponds to the 
+	numeric value a programmer would use when calling the API SHGetFolderPath. Please 
+	note that the dll ShFolder.dll must be installed on the client machine to use 
+	this functionality. This is a standard redistributable DLL for versions of all 
+	versions of Windows. On Windows 2000 or later it is built in to the OS. For 
+	example to display win.in in notepad assuming it is stored in the Windows directory 
+	(CSIDL_WINDOWS) you would use the command line:<br>
+	<br>
+	StartX.exe &quot;notepad.exe @CSIDL36@\win.ini&quot;. The numeric value 36 corresponds 
+	to hexadecimal 24 which by referring to the list which follows tells us that 
+	this is CSIDL_WINDOWS:<br>
+&nbsp;<p>CSIDL_ADMINTOOLS (0x0030)<br>
+	Version 5.0. The file system directory that is used to store administrative 
+	tools for an individual user. The Microsoft Management Console (MMC) will save 
+	customized consoles to this directory, and it will roam with the user. </p>
+	<p>CSIDL_ALTSTARTUP (0x001d)<br>
+	The file system directory that corresponds to the user&#39;s nonlocalized Startup 
+	program group. </p>
+	<p>CSIDL_APPDATA (0x001a)<br>
+	Version 4.71. The file system directory that serves as a common repository for 
+	application-specific data. A typical path is C:\Documents and Settings\username\Application 
+	Data. This CSIDL is supported by the redistributable Shfolder.dll for systems 
+	that do not have the Microsoft Internet Explorer 4.0 integrated Shell installed.
+	</p>
+	<p>CSIDL_BITBUCKET (0x000a)<br>
+	The virtual folder containing the objects in the user&#39;s Recycle Bin. </p>
+	<p>CSIDL_CDBURN_AREA (0x003b)<br>
+	Version 6.0. The file system directory acting as a staging area for files waiting 
+	to be written to CD. A typical path is C:\Documents and Settings\username\Local 
+	Settings\Application Data\Microsoft\CD Burning. </p>
+	<p>CSIDL_COMMON_ADMINTOOLS (0x002f)<br>
+	Version 5.0. The file system directory containing administrative tools for all 
+	users of the computer. </p>
+	<p>CSIDL_COMMON_ALTSTARTUP (0x001e)<br>
+	The file system directory that corresponds to the nonlocalized Startup program 
+	group for all users. Valid only for Microsoft Windows NT systems. </p>
+	<p>CSIDL_COMMON_APPDATA (0x0023)<br>
+	Version 5.0. The file system directory containing application data for all users. 
+	A typical path is C:\Documents and Settings\All Users\Application Data. </p>
+	<p>CSIDL_COMMON_DESKTOPDIRECTORY (0x0019)<br>
+	The file system directory that contains files and folders that appear on the 
+	desktop for all users. A typical path is C:\Documents and Settings\All Users\Desktop. 
+	Valid only for Windows NT systems. </p>
+	<p>CSIDL_COMMON_DOCUMENTS (0x002e)<br>
+	The file system directory that contains documents that are common to all users. 
+	A typical paths is C:\Documents and Settings\All Users\Documents. Valid for 
+	Windows NT systems and Microsoft Windows 95 and Windows 98 systems with Shfolder.dll 
+	installed. </p>
+	<p>CSIDL_COMMON_FAVORITES (0x001f)<br>
+	The file system directory that serves as a common repository for favorite items 
+	common to all users. Valid only for Windows NT systems. </p>
+	<p>CSIDL_COMMON_MUSIC (0x0035)<br>
+	Version 6.0. The file system directory that serves as a repository for music 
+	files common to all users. A typical path is C:\Documents and Settings\All Users\Documents\My 
+	Music. </p>
+	<p>CSIDL_COMMON_PICTURES (0x0036)<br>
+	Version 6.0. The file system directory that serves as a repository for image 
+	files common to all users. A typical path is C:\Documents and Settings\All Users\Documents\My 
+	Pictures. </p>
+	<p>CSIDL_COMMON_PROGRAMS (0x0017)<br>
+	The file system directory that contains the directories for the common program 
+	groups that appear on the Start menu for all users. A typical path is C:\Documents 
+	and Settings\All Users\Start Menu\Programs. Valid only for Windows NT systems.
+	</p>
+	<p>CSIDL_COMMON_STARTMENU (0x0016)<br>
+	The file system directory that contains the programs and folders that appear 
+	on the Start menu for all users. A typical path is C:\Documents and Settings\All 
+	Users\Start Menu. Valid only for Windows NT systems. </p>
+	<p>CSIDL_COMMON_STARTUP (0x0018)<br>
+	The file system directory that contains the programs that appear in the Startup 
+	folder for all users. A typical path is C:\Documents and Settings\All Users\Start 
+	Menu\Programs\Startup. Valid only for Windows NT systems. </p>
+	<p>CSIDL_COMMON_TEMPLATES (0x002d)<br>
+	The file system directory that contains the templates that are available to 
+	all users. A typical path is C:\Documents and Settings\All Users\Templates. 
+	Valid only for Windows NT systems. </p>
+	<p>CSIDL_COMMON_VIDEO (0x0037)<br>
+	Version 6.0. The file system directory that serves as a repository for video 
+	files common to all users. A typical path is C:\Documents and Settings\All Users\Documents\My 
+	Videos. </p>
+	<p>CSIDL_COMPUTERSNEARME (0x003d)<br>
+	The folder representing other computers in your workgroup. </p>
+	<p>CSIDL_CONNECTIONS (0x0031)<br>
+	The virtual folder representing Network Connections, containing network and 
+	dial-up connections. </p>
+	<p>CSIDL_CONTROLS (0x0003)<br>
+	The virtual folder containing icons for the Control Panel applications. </p>
+	<p>CSIDL_COOKIES (0x0021)<br>
+	The file system directory that serves as a common repository for Internet cookies. 
+	A typical path is C:\Documents and Settings\username\Cookies. </p>
+	<p>CSIDL_DESKTOP (0x0000)<br>
+	The virtual folder representing the Windows desktop, the root of the namespace.
+	</p>
+	<p>CSIDL_DESKTOPDIRECTORY (0x0010)<br>
+	The file system directory used to physically store file objects on the desktop 
+	(not to be confused with the desktop folder itself). A typical path is C:\Documents 
+	and Settings\username\Desktop. </p>
+	<p>CSIDL_DRIVES (0x0011)<br>
+	The virtual folder representing My Computer, containing everything on the local 
+	computer: storage devices, printers, and Control Panel. The folder may also 
+	contain mapped network drives. </p>
+	<p>CSIDL_FAVORITES (0x0006)<br>
+	The file system directory that serves as a common repository for the user&#39;s 
+	favorite items. A typical path is C:\Documents and Settings\username\Favorites.
+	</p>
+	<p>CSIDL_FLAG_DONT_UNEXPAND (0x2000)<br>
+	Combine with another CSIDL constant to ensure expanding of environment variables.
+	</p>
+	<p>CSIDL_FLAG_DONT_VERIFY (0x4000)<br>
+	Combine with another CSIDL constant, except for CSIDL_FLAG_CREATE, to return 
+	an unverified folder path&#8212;with no attempt to create or initialize the folder.
+	</p>
+	<p>CSIDL_FONTS (0x0014)<br>
+	A virtual folder containing fonts. A typical path is C:\Windows\Fonts. </p>
+	<p>CSIDL_HISTORY (0x0022)<br>
+	The file system directory that serves as a common repository for Internet history 
+	items. </p>
+	<p>CSIDL_INTERNET (0x0001)<br>
+	A viritual folder for Internet Explorer (icon on desktop). </p>
+	<p>CSIDL_INTERNET_CACHE (0x0020)<br>
+	Version 4.72. The file system directory that serves as a common repository for 
+	temporary Internet files. A typical path is C:\Documents and Settings\username\Local 
+	Settings\Temporary Internet Files. </p>
+	<p>CSIDL_LOCAL_APPDATA (0x001c)<br>
+	Version 5.0. The file system directory that serves as a data repository for 
+	local (nonroaming) applications. A typical path is C:\Documents and Settings\username\Local 
+	Settings\Application Data. </p>
+	<p>CSIDL_MYDOCUMENTS (0x000c)<br>
+	Version 6.0. The virtual folder representing the My Documents desktop item.
+	</p>
+	<p>CSIDL_MYMUSIC (0x000d)<br>
+	The file system directory that serves as a common repository for music files. 
+	A typical path is C:\Documents and Settings\User\My Documents\My Music. </p>
+	<p>CSIDL_MYPICTURES (0x0027)<br>
+	Version 5.0. The file system directory that serves as a common repository for 
+	image files. A typical path is C:\Documents and Settings\username\My Documents\My 
+	Pictures. </p>
+	<p>CSIDL_MYVIDEO (0x000e)<br>
+	Version 6.0. The file system directory that serves as a common repository for 
+	video files. A typical path is C:\Documents and Settings\username\My Documents\My 
+	Videos. </p>
+	<p>CSIDL_NETHOOD (0x0013)<br>
+	A file system directory containing the link objects that may exist in the My 
+	Network Places virtual folder. It is not the same as CSIDL_NETWORK, which represents 
+	the network namespace root. A typical path is C:\Documents and Settings\username\NetHood.
+	</p>
+	<p>CSIDL_NETWORK (0x0012)<br>
+	A virtual folder representing Network Neighborhood, the root of the network 
+	namespace hierarchy. </p>
+	<p>CSIDL_PERSONAL (0x0005)<br>
+	Version 6.0. The virtual folder representing the My Documents desktop item. 
+	This is equivalent to CSIDL_MYDOCUMENTS. <br>
+	Previous to Version 6.0. The file system directory used to physically store 
+	a user&#39;s common repository of documents. A typical path is C:\Documents and 
+	Settings\username\My Documents. This should be distinguished from the virtual 
+	My Documents folder in the namespace. To access that virtual folder, use SHGetFolderLocation, 
+	which returns the ITEMIDLIST for the virtual location, or refer to the technique 
+	described in Managing the File System.</p>
+	<p>CSIDL_PHOTOALBUMS (0x0045)<br>
+	Windows Vista. The virtual folder used to store photo albums, typically username\My 
+	Pictures\Photo Albums. </p>
+	<p>CSIDL_PLAYLISTS (0x003f)<br>
+	Windows Vista. The virtual folder used to store play albums, typically username\My 
+	Music\Playlists. </p>
+	<p>CSIDL_PRINTERS (0x0004)<br>
+	The virtual folder containing installed printers. </p>
+	<p>CSIDL_PRINTHOOD (0x001b)<br>
+	The file system directory that contains the link objects that can exist in the 
+	Printers virtual folder. A typical path is C:\Documents and Settings\username\PrintHood.
+	</p>
+	<p>CSIDL_PROFILE (0x0028)<br>
+	Version 5.0. The user&#39;s profile folder. A typical path is C:\Documents and Settings\username. 
+	Applications should not create files or folders at this level; they should put 
+	their data under the locations referred to by CSIDL_APPDATA or CSIDL_LOCAL_APPDATA.
+	</p>
+	<p>CSIDL_PROGRAM_FILES (0x0026)<br>
+	Version 5.0. The Program Files folder. A typical path is C:\Program Files.
+	</p>
+	<p>CSIDL_PROGRAM_FILES_COMMON (0x002b)<br>
+	Version 5.0. A folder for components that are shared across applications. A 
+	typical path is C:\Program Files\Common. Valid only for Windows NT, Windows 
+	2000, and Windows XP systems. Not valid for Windows Millennium Edition (Windows 
+	Me). </p>
+	<p>CSIDL_PROGRAMS (0x0002)<br>
+	The file system directory that contains the user&#39;s program groups (which are 
+	themselves file system directories). A typical path is C:\Documents and Settings\username\Start 
+	Menu\Programs. </p>
+	<p>CSIDL_RECENT (0x0008)<br>
+	The file system directory that contains shortcuts to the user&#39;s most recently 
+	used documents. A typical path is C:\Documents and Settings\username\My Recent 
+	Documents. To create a shortcut in this folder, use SHAddToRecentDocs. In addition 
+	to creating the shortcut, this function updates the Shell&#39;s list of recent documents 
+	and adds the shortcut to the My Recent Documents submenu of the Start menu.
+	</p>
+	<p>CSIDL_RESOURCES (0x0038)<br>
+	Windows Vista. The file system directory that contains resource data. A typical 
+	path is C:\Windows\Resources. </p>
+	<p>CSIDL_SAMPLE_MUSIC (0x0040)<br>
+	Windows Vista. The file system directory that contains sample music. A typical 
+	path is C:\Documents and Settings\username\My Documents\My Music\Sample Music.
+	</p>
+	<p>CSIDL_SAMPLE_PLAYLISTS (0x0041)<br>
+	Windows Vista. The file system directory that contains sample playlists. A typical 
+	path is C:\Documents and Settings\username\My Documents\My Music\Sample Playlists.
+	</p>
+	<p>CSIDL_SAMPLE_PICTURES (0x0042)<br>
+	Windows Vista. The file system directory that contains sample pictures. A typical 
+	path is C:\Documents and Settings\username\My Documents\My Pictures\Sample Pictures.
+	</p>
+	<p>CSIDL_SAMPLE_VIDEOS (0x0043)<br>
+	Windows Vista. The file system directory that contains sample videos. A typical 
+	path is C:\Documents and Settings\username\My Documents\My Videos\Sample Videos.
+	</p>
+	<p>CSIDL_SENDTO (0x0009)<br>
+	The file system directory that contains Send To menu items. A typical path is 
+	C:\Documents and Settings\username\SendTo. </p>
+	<p>CSIDL_STARTMENU (0x000b)<br>
+	The file system directory containing Start menu items. A typical path is C:\Documents 
+	and Settings\username\Start Menu. </p>
+	<p>CSIDL_STARTUP (0x0007)<br>
+	The file system directory that corresponds to the user&#39;s Startup program group. 
+	The system starts these programs whenever any user logs onto Windows NT or starts 
+	Windows 95. A typical path is C:\Documents and Settings\username\Start Menu\Programs\Startup.
+	</p>
+	<p>CSIDL_SYSTEM (0x0025)<br>
+	Version 5.0. The Windows System folder. A typical path is C:\Windows\System32.
+	</p>
+	<p>CSIDL_TEMPLATES (0x0015)<br>
+	The file system directory that serves as a common repository for document templates. 
+	A typical path is C:\Documents and Settings\username\Templates. </p>
+	<p>CSIDL_WINDOWS (0x0024)<br>
+	Version 5.0. The Windows directory or SYSROOT. This corresponds to the %windir% 
+	or %SYSTEMROOT% environment variables. A typical path is C:\Windows. </p>
+	</li>
+</ul>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<h2><a name="Contact"></a>Contacting the Author</h2>
+<p>PJ Naughter<br>
+Email: <a href="mailto:pjna@naughter.com">pjna@naughter.com</a><br>
+Web: <a href="http://www.naughter.com">http://www.naughter.com</a><br>
+11 November 2008</p>
+
+</body>
+
+</html>
