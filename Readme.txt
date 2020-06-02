@@ -67,6 +67,6 @@ So far it has been confirmed working offline on Windows XP, 2003, Vista, 7, both
 
 ---------------------------------------
 
-For details, refer to the blog post at https://wandersick.blogspot.com/2009/09/windows-sneaky-win-intruder.html (available in English translation)
+For details, refer to the blog post at https://tech.wandersick.com/2009/09/windows-sneaky-win-intruder.html (available in English translation)
 
 Please report any bugs to wandersick@gmail.com, or reply to the blog post

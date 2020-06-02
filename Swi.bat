@@ -8,7 +8,7 @@
 :: Last Modified: 9/9/2009
 :: Author: wanderSick@C7PE
 :: Email: wander.sic.k@gmail.com
-:: web: wandersick.blogspot.com
+:: web: tech.wandersick.com
 :: Supported OS: Windows XP, 2003 [R2], Vista, 2008 [R2], 7...
 :: Requirements: attrib.exe, find.exe, cacls.exe, taskkill.exe / wkill.exe + pskill.exe
 ::               takeown.exe / subinacl.exe, reg.exe, startx.exe (see Readme.txt)
@@ -912,7 +912,7 @@ pushd %Temp%
 
 for %%i in ("sneaky+win+intruder+2.0+final" "sneaky+win+intruder+2.0a" "sneaky+win+intruder+2.1" "sneaky+win+intruder+2.5" "sneaky+win+intruder+3.0") do (
 	del ecppUpdate.tmp /F /Q >nul 2>&1
-	wget --output-document=ecppUpdate.tmp --include-directories=www.google.com --accept=html -r -N -t2 -l2 -E -e robots=off - -T 200 -H -U "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7) Gecko/20040613 Firefox/0.8.0+" http://www.google.com/search?as_q=^&hl=en-US^&num=10^&as_epq=%%~i^&as_oq=^&as_eq=^&lr=^&cr=^&as_ft=i^&as_filetype=^&as_qdr=all^&as_occt=any^&as_dt=i^&as_sitesearch=wandersick.blogspot.com >nul 2>&1
+	wget --output-document=ecppUpdate.tmp --include-directories=www.google.com --accept=html -r -N -t2 -l2 -E -e robots=off - -T 200 -H -U "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7) Gecko/20040613 Firefox/0.8.0+" http://www.google.com/search?as_q=^&hl=en-US^&num=10^&as_epq=%%~i^&as_oq=^&as_eq=^&lr=^&cr=^&as_ft=i^&as_filetype=^&as_qdr=all^&as_occt=any^&as_dt=i^&as_sitesearch=tech.wandersick.com >nul 2>&1
 	@if !errorlevel! NEQ 0 (
 		@if /i "%1"=="/ud" echo.&echo :: An error occured during update check^^^! Verify Internet connectivity.&echo.&echo :: Going back in a few seconds...&((timeout /T 6 >nul 2>&1) || (ping -n 6 -l 2 127.0.0.1 >nul 2>&1))
 	)
@@ -932,7 +932,7 @@ for %%i in ("sneaky+win+intruder+2.0+final" "sneaky+win+intruder+2.0a" "sneaky+w
 :updateFound
 if defined debug echo updateFound: %updateFound%
 if /i "%updateFound%"=="false" (
-	@if /i "%1"=="/ud" echo.&echo                         **  No update was found **&echo.&echo.&echo :: You may check manually at wandersick.blogspot.com&echo.&echo :: Going back in a few seconds...&((timeout /T 6 >nul 2>&1) || (ping -n 6 -l 2 127.0.0.1 >nul 2>&1))
+	@if /i "%1"=="/ud" echo.&echo                         **  No update was found **&echo.&echo.&echo :: You may check manually at tech.wandersick.com&echo.&echo :: Going back in a few seconds...&((timeout /T 6 >nul 2>&1) || (ping -n 6 -l 2 127.0.0.1 >nul 2>&1))
 ) else if /i "%updateFound%"=="error" (
 	echo.&echo :: An error occured during update check^^^! Verify Internet connectivity.&echo.&echo :: Going back in a few seconds...&((timeout /T 6 >nul 2>&1) || (ping -n 6 -l 2 127.0.0.1 >nul 2>&1))
 ) else if /i "%updateFound%"=="true" (
@@ -940,8 +940,8 @@ if /i "%updateFound%"=="false" (
 	echo 
 	REM flashes taskbar
 	start "" "_winflash_wget.exe"
-	call _choiceYn ":: A new version seems available. Visit wandersick.blogspot.com now? [Y,N]" N 20
-	@if !errorlevel! EQU 0 start http://wandersick.blogspot.com
+	call _choiceYn ":: A new version seems available. Visit tech.wandersick.com now? [Y,N]" N 20
+	@if !errorlevel! EQU 0 start http://tech.wandersick.com
 )
 popd
 endlocal
